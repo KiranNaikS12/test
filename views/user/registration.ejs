@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style>
+
+  </style>
+</head>
+<body>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <div id="nameErr"></div>
+    <label for="name">Username:</label>
+    <input type="text" id="username" name="username">
+    <div id="usernameErr"></div>
+    <label for="name">Email:</label>
+    <input type="text" id="email" name="email">
+    <div id="emailErr"></div>
+    <label for="name">Phone:</label>
+    <input type="text" id="phone" name="phone">
+    <div id="phoneErr"></div>
+    <label for="name">Password:</label>
+    <input type="password" id="password" name="password">
+    <div id="passErr"></div>
+    <label for="name">Confrim password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword">
+    <div id="ConfrimErr"></div>
+
+    <input type="submit" onclick="validate()" value="Submit">
+  </form>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function validate(){
+
+       const name = document.getElementById('name').value;
+       const username = document.getElementById('username').value;
+       const email = document.getElementById('email').value;
+       const phone = document.getElementById('phone').value;
+       const password = document.getElementById('password').value;
+       $.ajax({
+        url:'/post',
+        method:'post',
+        data:{
+            name,
+            username,
+            email,
+            phone,
+            password
+        },
+        success: (response) => {
+                if (response.status === 'nameErr') {
+                    document.getElementById('nameErr').innerHTML = 'name is required';
+                    document.getElementById('nameErr').style.color = 'red';
+                    setTimeout(() => {
+                        document.getElementById('nameErr').innerHTML = '';
+                    }, 1500);
+                } else if (response.status === 'usernameErr') {
+                    document.getElementById('usernameErr').innerHTML = 'username is required';
+                    setTimeout(() => {
+                        document.getElementById('usernameErr').innerHTML = '';
+                    }, 1500);
+                } else if (response.status === 'emailErr') {
+                    document.getElementById('emailErr').innerHTML = 'email is required';
+                    document.getElementById('emailErr').style.color = 'red';
+                    setTimeout(() => {
+                        document.getElementById('emailErr').innerHTML = '';
+                    }, 1500);
+                } else if (response.status === 'phoneErr'){
+                    document.getElementById('phoneErr').innerHTML = 'phone number is required';
+                    document.getElementById('phoneErr').style.color = 'red';
+                    setTimeout(() => {
+                        document.getElementById('phoneErr').innerHTML = '';
+                    },1500);            
+                }else if(response.status === 'passErr'){
+                   document.getElementById('passErr').innerHTML = 'password is required';
+                   document.getElementById('passErr').style.color = 'red';
+                   setTimeout(() => {
+                    document.getElementById('passErr').innerHTML = ''
+                   },1500);
+                }
+                else if(response.status === true){
+                    console.log('ajax successful')
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>
